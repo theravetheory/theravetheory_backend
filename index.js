@@ -4,6 +4,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
+const Message = require('./model/message.js')
+
 const app = express();
 
 
@@ -41,9 +43,26 @@ http.listen(PORT, () => {
 io.on('connection', (socket) => { /* socket object may be used to send specific messages to the new connected client */
 
   console.log('new client connected');
-  socket.emit('connection', null);
+  Message.find({}, function(err, messages) {
+    socket.emit('connection', messages);
+  })
+
+
   socket.on('disconnect', () => {
     socket.removeAllListeners();
     console.log('a user disconnected');
   });
+
+  socket.on('newUser', function(msg) {
+    console.log(msg);
+    socket.emit('newUser', msg);
+    socket.broadcast.emit('newUser', msg);
+  })
+
+  socket.on('newChatMessage', function(msg) {
+    console.log(msg);
+    Message.create(msg);
+    socket.emit('newChatMessage', msg);
+    socket.broadcast.emit('newChatMessage', msg);
+  })
 });
