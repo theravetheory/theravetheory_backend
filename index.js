@@ -5,16 +5,45 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
 const app = express();
+
+
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI || `mongodb://localhost:27017/node-react-starter`);
+mongoose.connect(`mongodb://localhost:${process.env.MONGODB_URI}/theravetheorychat` || `mongodb://localhost:27017/theravetheorychat`);
+
+
+
+if (process.env.MONGODB_URI) {
+  console.log(`Mongodb connection on port ${process.env.MONGODB_URI} from .env file at root of backend directory`)
+}
+
+
 
 app.use(bodyParser.json());
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`app running on port ${PORT}`)
+
+
+const http = require('http').createServer(app);
+const io = require('socket.io')(http, {
+  cors: {
+    origin: '*',
+  }
+});
+
+http.listen(PORT, () => {
+  console.log(`Backend app running on port ${PORT}`)
+});
+
+io.on('connection', (socket) => { /* socket object may be used to send specific messages to the new connected client */
+
+  console.log('new client connected');
+  socket.emit('connection', null);
+  socket.on('disconnect', () => {
+    socket.removeAllListeners();
+    console.log('a user disconnected');
+  });
 });
