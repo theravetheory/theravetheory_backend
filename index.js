@@ -45,6 +45,7 @@ io.on('connection', (socket) => { /* socket object may be used to send specific 
   console.log('new client connected');
   Message.find({}, function(err, messages) {
     socket.emit('connection', messages);
+    console.log('messages should be printed')
   })
 
 
