@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "client": "npm run start --prefix ../theravetheory.github.io",
+    "client": "npm run start --prefix theravetheory.github.io",
     "server": "nodemon index.js",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "start": "node index.js"
@@ -13,6 +13,8 @@
     "body-parser": "^1.19.0",
     "dotenv": "^9.0.2",
     "express": "^4.17.1",
-    "mongoose": "^5.12.9"
+    "http": "^0.0.1-security",
+    "mongoose": "^5.12.9",
+    "socket.io": "^4.1.2"
   }
 }
