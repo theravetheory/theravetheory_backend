@@ -3,6 +3,7 @@ const dotenv = require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const Message = require('./model/message.js')
 
@@ -23,7 +24,9 @@ if (process.env.MONGODB_URI) {
 }
 
 
-
+if (process.env.ENV) {
+  app.use(express.static(path.join(__dirname, 'build')))
+}
 app.use(bodyParser.json());
 
 const PORT = process.env.PORT || 5000;
