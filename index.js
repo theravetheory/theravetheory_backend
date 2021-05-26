@@ -14,7 +14,7 @@ mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 mongoose.Promise = global.Promise;
-mongoose.connect(`mongodb://localhost:${process.env.MONGODB_URI}/theravetheorychat` || `mongodb://localhost:27017/theravetheorychat`);
+mongoose.connect(`mongodb://0.0.0.0:${process.env.MONGODB_URI}/theravetheorychat` || `mongodb://0.0.0.0:27017/theravetheorychat`);
 
 
 
@@ -33,6 +33,7 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http, {
   cors: {
     origin: '*',
+    methods: ["GET", "POST"]
   }
 });
 
